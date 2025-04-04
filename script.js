@@ -1,50 +1,52 @@
 /*******COLORS*******
-*********************/
-let colorBlue = "blue";
-let colorRed = "red";
-let colorYellow = "yellow";
-let colorGreen = "green";
+********************/
+let validColors = ["blue", "red", "yellow", "green", "purple", "orange", "white", "black"];
 
 /*******SECONDARY********
 ********FONCTIONS*******/
 function colorDifferent(codePlayer) {
-    if (codePlayer[0] == codePlayer[1]) {
-        alert("Colors have to be different");
-        return false;
+    for (let i = 0; i < codePlayer.length; i++) { //compare colorOne avec les suivantes, puis ColorTwo etc.
+        for (let j = i + 1; j < codePlayer.length; j++) {
+            if (codePlayer[i] === codePlayer[j]) {
+                alert("All colors must be different");
+                return false;
+            }
+        }
     }
     return true;
 }
 
-function colorRestrict(codePlayer) {
-    if (codePlayer[0] !== colorBlue && codePlayer[0] !== colorRed && codePlayer[0] !== colorYellow && codePlayer[0] !== colorGreen) {
-        alert("Give me a colorOne between : blue, red, yellow or green");
-        return false;
-    }
-    if (codePlayer[1] !== colorBlue && codePlayer[1] !== colorRed && codePlayer[1] !== colorYellow && codePlayer[1] !== colorGreen) {
-        alert("Give me a colorTwo between : blue, red, yellow or green");
-        return false;
+function colorRestrict(codePlayer, allColors) {
+    for (const color of codePlayer) {
+        if (!allColors.includes(color)) {
+            alert("Give me a colorOne between : blue, red, yellow, green, purple, orange, white or black");
+            return false;
+        } 
     }
     return true;
 }
 
 function colorTrue(codePlayer, resultPlayer) {
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < codePlayer.length; i++) {
         if (codePlayer[i] === secretCode[i]) {
             resultPlayer[0] ++;
         }
-        if (secretCode.includes(codePlayer[i])) {
-            resultPlayer[1] ++;
-        }
+        for (let j = 0; j < codePlayer.length; j++) {
+            if (codePlayer[i] === secretCode[j] && codePlayer[i] !== secretCode[i]){
+                resultPlayer[1] ++;
+            }
+        }        
     }
     alert(`${resultPlayer}`);
 }
 
 function winGame(codePlayer) {
-    if (codePlayer[0] == secretCode[0] && codePlayer[1] == secretCode[1]) {
-        return true;
-    } else {
-        return false;
+    for (let i = 0; i < 4; i++) {
+        if (codePlayer[i] !== secretCode[i]) {
+            return false;
+        }
     }
+    return true;
 }
 
 
@@ -56,11 +58,13 @@ function playGame() {
 
         alert(`You have ${attempts} attempts`);
 
-        let colorOne = prompt("Give me first color (blue, red, yellow, green)");
-        let colorTwo = prompt("Give me first color (blue, red, yellow, green)");
-        let codeBreaker = [colorOne, colorTwo];
+        let colorOne = prompt("Give me first color (blue, red, yellow, green, purple, orange, white or black)");
+        let colorTwo = prompt("Give me first color (blue, red, yellow, green, purple, orange, white or black)");
+        let colorThree = prompt("Give me first color (blue, red, yellow, green, purple, orange, white or black)");
+        let colorFour = prompt("Give me first color (blue, red, yellow, green, purple, orange, white or black)");
+        let codeBreaker = [colorOne, colorTwo, colorThree, colorFour];
 
-        if(!colorDifferent(codeBreaker) || !colorRestrict(codeBreaker)) {
+        if(!colorDifferent(codeBreaker) || !colorRestrict(codeBreaker, validColors)) {
             alert("Color Invalid");
             continue;
         }
@@ -79,57 +83,10 @@ function playGame() {
     alert("Too many attemps");
 }
 
+
 /********START********
 **********************/
 let attempts = 12;
-let secretCode = ["blue", "red"];
+let secretCode = ["black", "purple", "red", "orange"];
 
 playGame();
-
-
-// function colorTrue() {
-//     if (codeBreaker[0] == secretCode[0] && codeBreaker[1] == secretCode[1]) {
-//         result[0] = result.length;
-//         for (const colorPlayer of codeBreaker) {
-//             for (const colorMaker of secretCode) {
-//                 if (colorPlayer == colorMaker) {
-//                     result[1] ++;
-//                 } 
-//             }
-//         }
-
-//     } else if (codeBreaker[0] == secretCode[0] || codeBreaker[1] == secretCode[1]) {
-//         result[0] ++;
-//         for (const colorPlayer of codeBreaker) {
-//             for (const colorMaker of secretCode) {
-//                 if (colorPlayer == colorMaker) {
-//                     result[1] ++;
-//                 } 
-//             }
-//         }
-
-//     } else {
-//         for (const colorPlayer of codeBreaker) {
-//             for (const colorMaker of secretCode) {
-//                 if (colorPlayer == colorMaker) {
-//                     result[1] ++;
-//                 } 
-//             }
-//         }
-
-//     }
-//     console.log(result);
-// }
-
-
-// function playGame() {
-//     colorDifferent(codeBreaker)
-//     colorRestrict(codeBreaker);
-//     colorTrue(codeBreaker);
-//     let winning = winGame(codeBreaker);
-//     if (winning) {
-//         console.log("You win");
-//     } else {
-//         console.log("Try again");
-//     }
-// }
